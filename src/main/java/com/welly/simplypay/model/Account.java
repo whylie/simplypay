@@ -15,7 +15,7 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 10, unique = true, nullable = false)
+    @Column(length = 12, unique = true, nullable = false)
     private String accountNumber;
     private String alias;
     private String currency;

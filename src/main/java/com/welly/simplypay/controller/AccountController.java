@@ -6,6 +6,8 @@ import com.welly.simplypay.objects.AccountDTO;
 import com.welly.simplypay.objects.CardDTO;
 import com.welly.simplypay.service.AccountService;
 import com.welly.simplypay.service.CardService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -25,6 +27,9 @@ public class AccountController {
         this.cardService = cardService;
     }
 
+    @Operation(summary = "Generate a new card", description = "Calls an external provider to create a card for a specific account.")
+    @ApiResponse(responseCode = "200", description = "Card List")
+    @ApiResponse(responseCode = "409", description = "Duplicate card number generated")
     @GetMapping
     public ResponseEntity<Page<AccountDTO>> getAllAccounts(@RequestParam(defaultValue = "0") int page,
                                                      @RequestParam(defaultValue = "10") int size,
@@ -37,7 +42,9 @@ public class AccountController {
     public ResponseEntity<AccountDTO> getAccountByAccountNumber(@PathVariable String accountNumber) {
         return ResponseEntity.ok(accountService.getAccountByAccountNumber(accountNumber));
     }
-
+    @Operation(summary = "Create New Account", description = "API to create new account.")
+    @ApiResponse(responseCode = "201", description = "Account  created successfully")
+    @ApiResponse(responseCode = "409", description = "Duplicate account number generated")
     @PostMapping
     public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountDTO request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(accountService.createAccount(request));

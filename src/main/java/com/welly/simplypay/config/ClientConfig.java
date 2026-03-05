@@ -1,4 +1,4 @@
-package com.welly.simplypay.client;
+package com.welly.simplypay.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

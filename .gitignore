@@ -32,12 +32,14 @@ build/
 ### VS Code ###
 .vscode/
 
-/logs/
+
 # Compiled class file
 *.class
 
 # Log file
+/logs/
 *.log
+*.properties
 
 # BlueJ files
 *.ctxt

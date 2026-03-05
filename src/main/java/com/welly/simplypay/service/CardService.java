@@ -41,7 +41,7 @@ public class CardService {
     @Transactional(readOnly = true)
     public Page<CardDTO> getCardsByAccountNumber(String accountNumber, Pageable pageable) {
         if (!accountRepository.existsByAccountNumber(accountNumber)) {
-            throw new RuntimeException("Account not found: " + accountNumber);
+            throw new EntityNotFoundException("Account not found: " + accountNumber);
         }
 
         return cardRepository.findByAccountAccountNumber(accountNumber, pageable)
@@ -51,7 +51,7 @@ public class CardService {
     @Transactional
     public CardDTO createNewCard(String accountNumber) {
         Account account = accountRepository.findByAccountNumber(accountNumber)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Account not found"));
 
         // Call External API to get card number, cvv and expiry date
         ExternalCardInfo cardInfo = cardGeneratorClient.generateNewCard();

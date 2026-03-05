@@ -13,7 +13,7 @@ public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
+    @Column(length = 16, unique = true, nullable = false)
     private String cardNumber;
     private String ownerName;
     private Integer cvv;

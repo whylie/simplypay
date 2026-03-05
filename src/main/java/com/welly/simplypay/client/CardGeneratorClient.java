@@ -1,5 +1,6 @@
 package com.welly.simplypay.client;
 
+import com.welly.simplypay.exception.ApplicationException;
 import com.welly.simplypay.filter.ApiLoggingFilter;
 import com.welly.simplypay.objects.externalCards.ExternalCardInfo;
 import com.welly.simplypay.objects.externalCards.ExternalCardResponse;
@@ -36,7 +37,7 @@ public class CardGeneratorClient {
                     .retrieve()
                     .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), (request, res) -> {
                         logger.error("External API error: Status Code {}", res.getStatusCode());
-                        throw new RuntimeException("External Card Provider Unavailable");
+                        throw new ApplicationException("External Card Provider Unavailable", "EXTERNAL_API_ERROR", HttpStatus.BAD_GATEWAY);
                     })
                     .body(ExternalCardResponse.class);
 
@@ -48,11 +49,11 @@ public class CardGeneratorClient {
                 return info;
             }
 
-            throw new RuntimeException("Empty response from card provider");
+            throw new ApplicationException("Empty response from card provider", "EXTERNAL_API_ERROR", HttpStatus.BAD_REQUEST);
 
         } catch (Exception e) {
             logger.error("Failed to connect to External Card API: {}", e.getMessage());
-            throw new RuntimeException("Connection to Card Provider failed");
+            throw new ApplicationException("Connection to Card Provider failed", "EXTERNAL_API_ERROR", HttpStatus.BAD_GATEWAY);
         }
     }
 }
